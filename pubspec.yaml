@@ -44,6 +44,7 @@
     fluttertoast: ^8.2.4
     flutter_sequence_animation: ^4.0.0
     another_carousel_pro: ^1.0.2
+    win32: ^3.1.4
 #    line_awesome_icons: ^3.0.0
     get: ^4.1.4
     image_picker: ^0.8.4+4

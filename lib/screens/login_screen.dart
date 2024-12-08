@@ -3,35 +3,19 @@ import 'package:catalog/splashScreen/splash_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../Constant/size.dart';
 import '../global/global.dart';
 import 'forgot_password_screen.dart';
 import 'main_screen.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        // Set cursor color to black
-        textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.black),
-      ),
-      home: LoginScreen(),
-    );
-  }
-}
-
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
 
-  bool _passwordVisible = false;
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController emailTextEditingController = TextEditingController();
   final TextEditingController passwordTextEditingController = TextEditingController();
+  bool _passwordVisible = false;
 
   void _submit(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
@@ -73,6 +57,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context); // Create an instance of Responsive
+
     bool darkTheme = MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     return Scaffold(
@@ -80,71 +66,131 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Stack(
           children: [
             Container(
-              width: double.infinity,
+              width: responsive.getWidth(1),
+              height: responsive.getHeight(1),
               child: Image.asset(
                 darkTheme ? 'images/rbgl.png' : 'images/rbgl.png',
                 fit: BoxFit.cover,
               ),
             ),
             Positioned(
-              top: 350.0,
-              left: 15.0,
-              right: 15.0,
+              top: responsive.getHeight(0.35),
+              left: responsive.getWidth(0.05),
+              right: responsive.getWidth(0.05),
               child: Padding(
-                padding: EdgeInsets.all(20.0),
+                padding:EdgeInsets.symmetric(horizontal: 10),
                 child: Form(
                   key: widget._formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      TextFormField(
-                        controller: widget.emailTextEditingController,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          labelStyle: TextStyle(color: Colors.black),
-                          hintText: 'Enter your email',
-                          hintStyle: TextStyle(color: Colors.black.withOpacity(0.5)),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                      SizedBox(
+                            height: responsive.getWidth(0.10),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                            borderSide: BorderSide(color: Colors.yellow),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Email:",
+                            style: TextStyle(color: Colors.black),
                           ),
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          return null;
-                        },
+                          TextFormField(
+                            style: TextStyle(
+                              color: Colors.black
+                            ),
+                            cursorColor: Colors.yellow,
+                            controller: widget.emailTextEditingController,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.email,color: Colors.grey,),
+                              labelStyle: TextStyle(color: Colors.black),
+                              hintText: 'Enter your email',
+                              hintStyle: TextStyle(color: Colors.black.withOpacity(0.5)),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(6.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              filled: true,
+                              fillColor: Colors.white
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your email';
+                              }
+                              return null;
+                            },
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 20.0),
-                      TextFormField(
-                        controller: widget.passwordTextEditingController,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          labelStyle: TextStyle(color: Colors.black),
-                          hintText: 'Enter your password',
-                          hintStyle: TextStyle(color: Colors.black.withOpacity(0.5)),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                      SizedBox(height: responsive.getHeight(0.02)),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Password:",
+                            style: TextStyle(color: Colors.black),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                            borderSide: BorderSide(color: Colors.yellow),
+                          TextFormField(
+                            style: TextStyle(
+                              color: Colors.black
+                            ),
+                            cursorColor: Colors.yellow,
+                            controller: widget.passwordTextEditingController,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.lock,color: Colors.grey,),
+                              labelStyle: TextStyle(color: Colors.black),
+                              hintText: 'password',
+                              hintStyle: TextStyle(color: Colors.black.withOpacity(0.5)),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(6.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
+                              suffixIcon: IconButton(
+                            icon: Icon(widget._passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,color: Colors.grey,),
+                            onPressed: () {
+                              setState(() {
+                                widget._passwordVisible = !widget._passwordVisible;
+                              });
+                            },
                           ),
-                        ),
-                        obscureText: !widget._passwordVisible,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
+                            ),
+                            obscureText: !widget._passwordVisible,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your password';
+                              }
+                              return null;
+                            },
+                            
+                          ),
+                          SizedBox(
+                            height: responsive.getHeight(0.01),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 20.0),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: GestureDetector(
+                              onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (c) => ForgotPasswordScreen()));
+                              },
+                              child: Text(
+                                'Forgot Password?',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                      ),
+                      SizedBox(height: responsive.getHeight(0.03)),
                       ElevatedButton(
                         onPressed: () {
                           widget._submit(context);
@@ -155,32 +201,38 @@ class _LoginScreenState extends State<LoginScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
                           ),
+                          minimumSize: Size(responsive.getWidth(1.0), responsive.getHeight(0.06)),
                         ),
                         child: Text(
                           'Login',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black),
                         ),
                       ),
-                      SizedBox(height: 20.0),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(context,MaterialPageRoute(builder: (c) => ForgotPasswordScreen()));
-                        },
-                        child: Text(
-                          'Forgot Password?',
+                      SizedBox(height: responsive.getHeight(0.01)),
+                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("don't have an account?",
                           style: TextStyle(color: Colors.black),
                         ),
-                      ),
-                      SizedBox(height: 20.0),
-                      TextButton(
-                        onPressed: () {
+                        SizedBox(width: 2,),
+                        GestureDetector(
+                          onTap: () {
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (c) => RegisterScreen()));
                         },
-                        child: Text(
-                          'Create an account',
-                          style: TextStyle(color: Colors.black),
+                          child: Text(
+                            'Register',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w900,
+                              color:Colors.yellow),
+                          ),
                         ),
-                      ),
+                      ],
+                     )
                     ],
                   ),
                 ),

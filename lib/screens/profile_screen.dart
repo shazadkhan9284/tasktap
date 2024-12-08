@@ -7,8 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../global/global.dart';
-import 'account_screen.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'forgot_password_screen.dart';
 
@@ -45,12 +43,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> initPrefs() async {
     prefs = await SharedPreferences.getInstance();
     String? imagePath = prefs.getString('imagePath');
-    if (imagePath != null) {
-      setState(() {
-        _image = File(imagePath);
-      });
+    setState(() {
+      _image = File(imagePath!);
+    });
     }
-  }
 
 
   // Fetch user data from Firestore

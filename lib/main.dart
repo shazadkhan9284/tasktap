@@ -1,20 +1,15 @@
 import 'dart:io';
 import 'package:catalog/screens/login_screen.dart';
-import 'package:catalog/screens/orders_screen.dart';
-import 'package:catalog/screens/payment_screen.dart';
 import 'package:catalog/splashScreen/splash_screen.dart';
-import 'package:catalog/work_field/genral_labour.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'global/global.dart';
 import 'screens/main_screen.dart';
-import 'screens/register_screen.dart';
 import "package:catalog/themeProvider/theme_provider.dart";
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
   Future<void> main() async {
     WidgetsFlutterBinding.ensureInitialized();
-
     if (Platform.isAndroid) {
       await Firebase.initializeApp(
         options: const FirebaseOptions(

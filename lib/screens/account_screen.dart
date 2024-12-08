@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../global/global.dart';
 import '../screens/login_screen.dart';
 import '../splashScreen/splash_screen.dart';
-import '../screens/main_screen.dart';
 import 'aboutus.dart';
 import 'contacus.dart';
 

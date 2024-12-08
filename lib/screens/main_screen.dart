@@ -54,7 +54,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
         );
 
-        if (exitConfirmed == null || !exitConfirmed) {
+        if (!exitConfirmed) {
           // User canceled exit or clicked "No"
           return false; // Do not allow the app to exit
         } else {
